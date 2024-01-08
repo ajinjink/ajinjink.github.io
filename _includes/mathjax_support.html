@@ -1,4 +1,4 @@
-<script type="text/x-mathjax-config">
+<!-- <script type="text/x-mathjax-config">
     MathJax.Hub.Config({
         TeX: {
           equationNumbers: {
@@ -17,7 +17,25 @@
     MathJax.Hub.Register.MessageHook("TeX Jax - parse error",function (message) {
           alert("Math Processing Error: "+message[1]);
         });
-</script>
-<script type="text/javascript" async
+</script> -->
+<!-- <script type="text/javascript" async
     src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script> -->
+<script>
+  window.MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$', '$$'], ['\\[', '\\]']],
+      processEscapes: true,
+      tags: 'ams'
+    },
+    svg: {
+      fontCache: 'global'
+    }
+  };
+  </script>
+  
+<script type="text/javascript" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
 </script>
+
