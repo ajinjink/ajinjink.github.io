@@ -73,7 +73,7 @@ theme_mode: # [light|dark]
 img_cdn:
 
 # the avatar on sidebar, support local or CORS resources
-avatar: https://github.com/ajinjink/iotest/assets/105297115/4357f40d-9ee3-40b6-a74b-49fa3c064fed
+avatar: https://github.com/ajinjink/ajinjink/assets/105297115/ca8f53a0-de50-45ed-991f-43bcc352b866
 
 # boolean type, the global switch for TOC in posts.
 toc: true
