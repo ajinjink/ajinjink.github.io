@@ -62,7 +62,9 @@ use_math: true
     * pros) 간단하게 구현 가능
     * cons) 토큰 사이의 상대적 위치 정보 활용 불가능. 긴 텍스트(학습 데이터 없음) 추론 시 성능 저하
 * relative position encoding (상대적)
-    <img width="1294" alt="Screenshot 2024-08-23 at 4 02 37 PM" src="https://github.com/user-attachments/assets/a3a93424-895c-4411-b517-89b531649369">
+    <img width="1294" alt="Screenshot 2024-08-23 at 4 02 37 PM" src="https://github.com/user-attachments/assets/a3a93424-895c-4411-b517-89b531649369">  
+    * 
+
 
 ---------
 
@@ -111,6 +113,12 @@ $$ Attention(Q, K, V)=softmax(\frac{QK^T}{\sqrt{d_k}})V $$
 $1/\sqrt{d_k}$ 로 additive attention의 일부 장점도 얻음.
 * $\sqrt{d_k}$ : scaling. 분산을 1로 정규화.  
     분산 → 표준편차 변환과 비슷하다고 생각하면 될 듯.
+* 쿼리, 키의 차원이 커지면 내적한 어텐션 스코어가 너무 커짐. 소프트맥스 함수를 통과할 때 문제를 일으킬 수 있음.  
+* 디멘션에 루트 씌운 걸로 나눠서 항상 어텐션 스코어가 제대로 나오도록 함.
+* 벡터의 분산이 차원의 제곱근에 비례하여 증가함.
+    * $Var(y) = 1 \times d_k$
+    * $Var({y \over \sqrt d_k}) = 1$
+    * 쿼리, 키 벡터가 각각 평균 0, 분산 1이라고 가정하면 위와 같이 키의 디멘션이 나옴. 밑에 루트 붙이면 계속 1 나와서 Vanishing gradient가 안 남.
 
 
 
@@ -149,10 +157,12 @@ Encoder-Decoder Attention :
 
 인코더 스택 : 6개의 동일한 인코더 층으로 구성. 각 층은 독립적으로 작동  
 디코더 스택 : 6개의 동일한 디코더 층으로 구성. 각 층은 독립적으로 작동
+완전 마지막 리니어 층은 모델 차원(e.g.512)의 출력을 vocabulary와 같은 차원으로 변환함. 각 위치에서 다음에 올 가장 적절한 토큰 예측 가능.
 
 * 각 층은 Multi-Head Attention 과 Feed Forward 2개의 sub-layer를 가짐
 * 각 sub-layer 이후 layer-normalization을 함.
     * 잔차 연결 후에 각 layer의 출력을 정규화
+* 어텐션 layer마다 parameter가 다 달라서 rich contextual info가 나옴.
 
 인코딩 : 입력 시퀀스가 인코더 스택을 한 번 통과.  
 - 6개의 인코더 층은 순차적으로 모두 통과.
@@ -163,6 +173,11 @@ Encoder-Decoder Attention :
 - 각 층에서 잔차 연결.  
 
 디코딩도 동일
+
+인코더-디코더 어텐션 (Encoder-Decoder Attention)
+- Q: 디코더의 self-attention 거친 후의 표현이 쿼리로 사용됨
+- K: 인코더에서 최종적으로 생성된 출력이 키로 사용됨 (인코더에서 나온 입력 단어의 표현)
+- V: 인코더에서 최종적으로 생성된 출력이 값으로 사용됨 (인코더에서 나온 입력 단어의 표현)
 
 ### Residual Connection
 : 각 sub-layer의 입력을 출력에 더해.
@@ -189,15 +204,26 @@ $$ FFN(x)=max(0, xW_1 + b_1)W_2 + b_2 $$
 
 1. 첫 번째 1x1 convolution  
     $xW_1 + b_1$
+    * 임베딩 차원 $d_{model}$에서 더 높은 차원 $d_{ff}$로 변환.
+    * 비선형성 추가
 2. ReLU 활성화
 3. 두 번째 1x1 convolution  
     (결과)$W_2 + b_2$
+    * 확장된 고차원 벡터를 다시 $d_{model}$로 축소.
+    * 모델이 입력과 동일한 차원의 출력 벡터를 유지하도록 함.
 
 cf)  
 ReLU (Rectified Linear Unit)
 - 활성화 함수 $f(x) = max(0, x)$  
 - feed forward 네트워크에 비선형성 도입  
     → 모델이 복잡한 패턴 학습할 수 있도록
+
+FFN 층에서의 weight
+- feed-forward network 층에서는 입력 시퀀스의 각 토큰에 대해 $\textbf{독립적으로}$ 동일한 가중치가 작동.
+    - 가중치 $W_1, W_2$와 바이어스 $b_1, b_2$는 모든 토큰에 대해 동일하게 적용
+    - 단, 토큰마다 입력되는 벡터가 다르기 때문에, 출력값은 토큰마다 다르게 나옴.
+    - 각 토큰을 독립적으로 처리 $\rightarrow$ 병렬처리에 적합
+
 
 --------
 
