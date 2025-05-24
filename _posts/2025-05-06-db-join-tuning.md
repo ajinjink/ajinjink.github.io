@@ -47,7 +47,7 @@ end;
 - Outer 쪽 테이블 사이즈가 크지 않으면 table full scan 해도 됨. 어차피 한 번 돌아.
 - Inner 쪽 테이블은 인덱스 사용해야 함. 아니면 Outer loop 횟수만큼 table full scan 해야 함.
 
-<img src="/assets/images/2025-05-06/Picture2.png" alt="Picture1" style="zoom:22%;" />
+<img src="/assets/images/2025-05-06/Picture2.png" alt="Picture2" style="zoom:22%;" />
 
 1. 사원_X1 인덱스에서 입사일자 >= '20200101'인 첫 번째 레코드 찾아
 2. 인덱스에서 읽은 ROWID로 사원 테이블 레코드 찾아
@@ -275,7 +275,7 @@ Rows  Row Source Operation
 
 ### PGA
 
-<img src="/assets/images/2025-05-06/Picture4.gif" alt="Picture1" style="zoom:22%;" />
+<img src="/assets/images/2025-05-06/Picture4.gif" alt="Picture4" style="zoom:22%;" />
 
 SGA에 캐시된 데이터는 여러 프로세스가 공유.
 
@@ -346,7 +346,7 @@ end;
 
 - 실제 조인 오퍼레이션인 머지 단계는 NL 조인과 다르지 않음
 
-<img src="/assets/images/2025-05-06/Picture5.png" alt="Picture1" style="zoom:22%;" />
+<img src="/assets/images/2025-05-06/Picture5.png" alt="Picture5" style="zoom:22%;" />
 
 - 사원 데이터를 기준으로 고객 데이터를 매번 full scan 하지 않음.
 - 고객 데이터가 정렬되어 있으므로, 조인 대상 레코드를 쉽게 찾고, 조인에 실패하는 레코드를 만나는 순간 멈출 수 있음.
@@ -442,7 +442,7 @@ and    e.부서코드    = 'Z123'
 and    c.최종주문금액 >= 20000
 ```
 
-<img src="/assets/images/2025-05-06/Picture6.png" alt="Picture1" style="zoom:22%;" />
+<img src="/assets/images/2025-05-06/Picture6.png" alt="Picture6" style="zoom:22%;" />
 
 1. Build 단계 : 조건에 해당하는 사원 데이터를 읽어 해시 테이블 생성
 
@@ -469,7 +469,7 @@ from 고객
 where 최종주문금액 >= 20000
 ```
 
-<img src="/assets/images/2025-05-06/Picture7.png" alt="Picture1" style="zoom:22%;" />
+<img src="/assets/images/2025-05-06/Picture7.png" alt="Picture7" style="zoom:22%;" />
 
 ```plsql
 begin
@@ -512,13 +512,13 @@ end;
 
 만약 두 테이블 모두 대용량 테이블이어서 인메모리 해시 조인이 불가능하면 Divide & Conquer.
 
-<img src="/assets/images/2025-05-06/Picture8.png" alt="Picture1" style="zoom:22%;" />
+<img src="/assets/images/2025-05-06/Picture8.png" alt="Picture8" style="zoom:22%;" />
 
 1. 파티션
    - 조인하는 양쪽 집합의 조인 칼럼에 해시 함수를 적용하고, 반환된 해시 값에 따라 동적으로 파티셔닝
    - 양쪽 집합(T1, T2)을 읽어 디스크 Temp 공간에 저장
 
-<img src="/assets/images/2025-05-06/Picture9.png" alt="Picture1" style="zoom:22%;" />
+<img src="/assets/images/2025-05-06/Picture9.png" alt="Picture9" style="zoom:22%;" />
 
 2. 조인
 
@@ -677,7 +677,7 @@ Built Input으로 선택하고 싶은 테이블이 조인된 결과 집합이어
 
 하지만 수행빈도가 높은 쿼리에 대해서는 조심해야 한다.
 
-<img src="/assets/images/2025-05-06/Picture10.png" alt="Picture1" style="zoom:22%;" />
+<img src="/assets/images/2025-05-06/Picture10.png" alt="Picture10" style="zoom:22%;" />
 
 1. 소량 데이터 조인할 때 $\rightarrow$ NL 조인
 2. 대량 데이터 조인할 때 $\rightarrow$ 해시 조인

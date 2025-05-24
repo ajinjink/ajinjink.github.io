@@ -18,7 +18,7 @@ SQL 수행 도중 가공된 데이터 집합이 필요할 때, PGA와 temp table
 - in-memory sort (internal sort) : 전체 정렬 작업을 메모리 내에서 완료
 - to-disk sort (external sort) : Sort Area 내에서 완료하지 못하고 디스크 공간까지 사용
 
-<img src="/assets/images/2025-05-21/Picture1.png" />
+<img src="/assets/images/2025-05-21/Picture1.png" alt="Picture1"/>
 
 1. 소트 대상 집합을 SGA 버퍼캐시를 통해서 읽어
 2. Sort Area에서 정렬 시도
@@ -66,7 +66,7 @@ select sum(sal), max(sal), min(sal), avg(sal) from emp;
 |  2 |   TABLE ACCESS FULL| EMP  | 14   | 56    |    3 (0)   | 00:00:01 |
 ```
 
-<img src="/assets/images/2025-05-21/Picture2.png" />
+<img src="/assets/images/2025-05-21/Picture2.png" alt="Picture2"/>
 
 데이터를 정렬하지 않고 SUM, MAX, MIN, AVG 구하는 순서
 
@@ -120,7 +120,7 @@ order by deptno ;
 
 전체 사원의 급여 정보를 읽어서 부서번호 순으로 정렬하는 건 너무 비효율적.
 
-<img src="/assets/images/2025-05-21/Picture3.png" />
+<img src="/assets/images/2025-05-21/Picture3.png" alt="Picture3"/>
 
 - 부서번호 별로 메모리를 할당하고, 부서번호 순으로 정렬.
   - 정렬되어 있어야 찾기 편함
@@ -153,7 +153,7 @@ Sort Group By에서는 메모리 공간을 찾기 위해 정렬을 했음.
 
 Hash Group By는 소트 알고리즘 대신 해싱 알고리즘을 사용.
 
-<img src="/assets/images/2025-05-21/Picture4.png"/>
+<img src="/assets/images/2025-05-21/Picture4.png" alt="Picture4"/>
 
 레코드 읽을 때마다 Group By 칼럼의 해시 값으로 해시 버킷을 찾아 그룹별로 집계 항목 갱신.
 
@@ -353,7 +353,7 @@ Execution Plan
 6  5         INDEX (RANGE SCAN) OF '결제_N1' (INDEX) (Cost=1 Card=1)
 ```
 
-<img src="/assets/images/2025-05-21/Picture5.png" style="zoom:22%;" />
+<img src="/assets/images/2025-05-21/Picture5.png" alt="Picture5" style="zoom:22%;" />
 
 위 아래 두 집합이 상호배타적이므로 Union 대신 Union All 사용해도 됨.
 
@@ -384,7 +384,7 @@ Execution Plan
 - 이 쿼리는 상하단 집합 사이에 인스턴스 중복 가능성이 있음
   - 결제일자와 주문일자 조건은 상호배타적 조건이 아님
 
-<img src="/assets/images/2025-05-21/Picture6.png" style="zoom:22%;" />
+<img src="/assets/images/2025-05-21/Picture6.png" alt="Picture6" style="zoom:22%;" />
 
 여기서 Union을 Union All로 바꾸면 결제일자와 주문일자가 같은 결제 데이터가 중복해서 출력됨.
 
@@ -890,7 +890,7 @@ Top N 쿼리에 작동하는 Top N Stopkey 알고리즘은 모든 칼럼이 인�
 
 - 하지만 DEPTNO = 30 인 모든 레코드를 읽지 않음.
 
-<img src="/assets/images/2025-05-21/Picture7.png" />
+<img src="/assets/images/2025-05-21/Picture7.png" alt="Picture7"/>
 
 - DEPTNO = 30 을 만족하는 가장 오른쪽에서부터 역순으로 스캔하면서 테이블을 액세스하다가 MGR = 7698 조건을 만족하는 레코드를 하나 만나면 멈춤
 - 인라인 뷰를 사용하므로 쿼리가 약간 더 복잡하긴 하지만 성능 측면에서는 MIN/MAX 쿼리보다 나음
@@ -905,7 +905,7 @@ Top N 쿼리에 작동하는 Top N Stopkey 알고리즘은 모든 칼럼이 인�
 
 이전 버전으로 값이 어떻게 변경되어 왔는지 이력을 조회해야 한다면 이력 테이블을 따로 관리해야 함.
 
-<img src="/assets/images/2025-05-21/Picture8.png" style="zoom:22%;"/>
+<img src="/assets/images/2025-05-21/Picture8.png" alt="Picture7" style="zoom:22%;"/>
 
 이력 테이블에는 보통 현재 테이터도 저장.
 
@@ -1135,7 +1135,7 @@ group by region
 - region이 선두 칼럼인 인덱스를 이용하면 Sort Group By 연산 생략 가능
 - 실행계획에 NOSORT 라고 명시되어 있음
 
-<img src="/assets/images/2025-05-21/Picture9.png" style="zoom:22%;" />
+<img src="/assets/images/2025-05-21/Picture9.png" alt="Picture9" style="zoom:22%;" />
 
 운반단위 Array Size = 3 일 때
 
