@@ -1,7 +1,7 @@
 ---
 title: Transformer 모델
 date: 2024-08-23
-categories: ["2024", "LLM"]
+categories: ["AI", "LLM"]
 tags: ["transformer", "attention"]
 use_math: true
 ---

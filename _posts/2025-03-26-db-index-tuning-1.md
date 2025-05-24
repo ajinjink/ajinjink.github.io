@@ -2,7 +2,7 @@
 title: "[DB] 인덱스 튜닝 - 테이블 액세스 최소화"
 date: 2025-03-26
 categories: ["Database"]
-tags: ["index", "index-tuning", "table access", ""]
+tags: ["index", "index-tuning", "table access", "IMDB", "random I/O", "index clustering factor", "buffer pinning", "index-organized-table", "clusted index", "index cluster table", "hash cluster table", "batch I/O"]
 use_math: true
 ---
 
@@ -74,13 +74,13 @@ ROWID는 생각보다 고비용이다.
 
 ## 인덱스 클러스터링 팩터
 
-Clusterfing FActor(CF) : 특정 칼럼을 기준으로 같은 값을 갖는 데이터가 서로 모여있는 정도
+Clusterfing Factor(CF) : 특정 칼럼을 기준으로 같은 값을 갖는 데이터가 서로 모여있는 정도
 
 CF가 좋은 칼럼에 생성한 인덱스는 검색 효율이 좋음. *거주지역='제주'* 에 해당하는 고객 데이터가 물리적으로 근접해 있으면 데이터를 찾는 속도가 빠름.
 
-![Image](https://github.com/user-attachments/assets/36083bff-3226-4bf1-8dec-344e0b52f19e)
+![Image](/assets/images/2025-03-26/Picture1.png)
 
-![Image](https://github.com/user-attachments/assets/4ca68563-068b-469d-9a51-acee51665343)
+![Image](/assets/images/2025-03-26/Picture2.png)
 
 위 두 개의 인덱스를 비교하면 인덱스 클러스터링 팩터가 높고 낮은 것을 비교할 수 있음.
 
@@ -90,7 +90,7 @@ CF가 좋으면 테이블 액세스량에 비해 블록 I/O가 적게 발생함.
 그 다음 인덱스 레코드를 읽었는데, 바로 직전과 같은 테이블 블록을 가리키면, 유지하고 있는 포인터를 사용하여 바로 테이블 블록을 읽을 수 있음.
 $\rightarrow$ 논리적 블록 I/O 생략
 
-![Image](https://github.com/user-attachments/assets/d4e1de5c-c7b3-48c0-85f4-663a800de321)
+![Image](/assets/images/2025-03-26/Picture3.png)
 
 실선에서 실제 블록 I/O가 발생하고, 점선에서 저장된 포인터를 사용함.
 
@@ -100,7 +100,7 @@ CF가 안 좋은 인덱스를 사용하면 테이블을 액세스 하는 횟수�
 
 ## 인덱스 손익분기점
 
-![Image](https://github.com/user-attachments/assets/9b3cd99f-e814-423f-9220-e0d3f9621552)
+![Image](/assets/images/2025-03-26/Picture4.png)
 
 위에서도 봤듯이, 인덱스 ROWID를 이용한 테이블 액세스는 고비용.
 
@@ -312,7 +312,7 @@ where deptno = 30
   and sal >= 2000
 ```
 
-![Image](https://github.com/user-attachments/assets/30130a1b-b3be-4e45-bd59-112403d75973)
+![Image](/assets/images/2025-03-26/Picture5.png)
 
 - 조건을 만족하는 사원은 한 명인데 테이블 6번 액세스
 - 인덱스 구성을 [DEPTNO, SAL] 순으로 변경하면 좋겠지만, 현재 상태의 인덱스를 사용하는 쿼리가 있을 수 있기 때문에 인덱스 구성을 변경하기 쉽지 않음
@@ -320,7 +320,7 @@ where deptno = 30
 - 이럴 때 인덱스에 칼럼을 추가해 줄 수 있음
 - 인덱스 스캔량은 줄지 않지만, 테이블 랜덤 액세스 횟수를 줄여줌
 
-![Image](https://github.com/user-attachments/assets/cb7126f5-c484-408c-9b7e-157794c37302)
+![Image](/assets/images/2025-03-26/Picture6.png)
 
 ```sql
 select 렌탈관리번호, 고객명, 서비스관리번호, 서비스번호
@@ -533,7 +533,7 @@ IOT는 인위적으로 clustering factor를 좋게 만드는 방법 중 하나
 
 한 블록에 모두 담을 수 없으면 새로운 블록 할당받아서 클러스터 체인으로 연결
 
-![Image](https://github.com/user-attachments/assets/183a0479-d777-4388-a178-1b7ea87290d2)
+![Image](/assets/images/2025-03-26/Picture7.png)
 
 다중 테이블 클러스터 : 여러 테이블 레코드를 같은 블록에 저장할 수도 있음
 
@@ -567,7 +567,7 @@ create table dept (
 cluster c_dept#(deptno);
 ```
 
-![Image](https://github.com/user-attachments/assets/743dbfc9-1f87-4ff1-a2a6-8520ae3acfe2)
+![Image](/assets/images/2025-03-26/Picture8.png)
 
 - 클러스터 인덱스도 일반 B*Tree 인덱스 구조 사용
 - 테이블 레코드를 일일이 가리키지 않고 해당 값을 저장하는 첫 번째 데이터 블록을 가리킴
@@ -585,7 +585,7 @@ cluster c_dept#(deptno);
 
 인덱스를 사용하지 않고 해시 알고리즘을 사용해 클러스터를 찾아감
 
-![Image](https://github.com/user-attachments/assets/a3af872e-149c-4a1b-aa2d-9a9b963222fe)
+![Image](/assets/images/2025-03-26/Picture9.png)
 
 클러스터 생성
 

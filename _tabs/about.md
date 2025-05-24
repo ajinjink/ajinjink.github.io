@@ -15,7 +15,8 @@ order: 4
 ## **EDUCATION**
 
 > **<span style="color:black">Hanyang University - Department of Information Systems</span>**  
-    Mar 2022 - Aug 2025
+    Mar 2022 - Aug 2025<br/>
+    GPA : 4.42 / 4.50
 
 -----
 -----
