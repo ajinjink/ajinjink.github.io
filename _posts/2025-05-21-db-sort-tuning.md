@@ -72,7 +72,7 @@ select sum(sal), max(sal), min(sal), avg(sal) from emp;
 
 1. Sort Area에 SUM, MAX, MIN, COUNT 값을 위한 변수 하나씩 할당
 2. 테이블에서 읽은 첫 번째 레코드 값을 SUM, MAX, MIN 변수에 저장하고, COUNT에는 1 저장
-3. 두 번째 레코드부터 하나씩 읽어가면서 SUM 변수에는 값을 누적하고, MAX, MIN은 언데이트, COUNT는 1 증가시킴
+3. 두 번째 레코드부터 하나씩 읽어가면서 SUM 변수에는 값을 누적하고, MAX, MIN은 업데이트, COUNT는 1 증가시킴
 4. SUM, MAX, MIN 은 저장되어 있는 값 출력하고, AVG는 SUM을 COUNT로 나눠서 출력
 
 
@@ -647,7 +647,7 @@ Predicate Information (identified by operation id):
 
 2-Tier 환경에서는 부분범위 처리를 활용한 튜닝을 많이 했음.
 
-요즘은 클라이언트과 DB 사이에 WAS, AP 등이 존해하는 3-Tier 아키텍처가 많음.
+요즘은 클라이언트과 DB 사이에 WAS, AP 등이 존재하는 3-Tier 아키텍처가 많음.
 
 ​	서버 리소스를 수많은 클라이언트가 공유하는 구조이므로, 클라이언트가 특정 DB 컨넥션을 독점할 수 없음.
 
