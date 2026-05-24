@@ -1,10 +1,39 @@
 ---
 title: "[ML] Bayesian Optimization"
-date: 2026-05-19
+date: 2026-05-20
 categories: ["AI", "ML"]
 tags: ["Bayes' theorem", "Gaussian process", "GP regression", "Bayesian optimization", "acquisition function", "GP fit", "Cholesky decomposition", "conjugate"]
 use_math: true
 ---
+
+## 요약
+
+- 어떤 목적함수가 있어 (e.g. 머신러닝 모델의 loss function).
+    - 그런데 이 목적함수가 블랙박스이거나 실행하는 데 코스트가 너무 높아.
+    - 그래서 목적함수를 모방하는 surrogate model을 하나 둬 = GP
+- Gaussian Process
+    - 함수 공간 위의 분포
+    - 임의의 유한한 점들 ${x_1, \dots, x_n\}$에서의 함숫값 벡터가 multivariate Gaussian을 따르도록 정의되는 stochastic process
+    - prior로 mean function $m(x)$와 kernel $k(x, x')$을 정의하면 함수에 대한 prior가 정해져
+- GP fit
+    - kernel의 hyperparameter 학습
+        - kernel의 모양을 데이터에 맞추기
+    - posterior 계산
+        - GP prior를 데이터 $D$에 conditioning 해서 posterior GP 얻어
+        - posterior GP는 함수 공간 위의 분포로 존재
+            - 필요한 $x^\*$가 들어오면, 그 점에서의 $\mu(x^\*), \sigma^2(x^\*)$ 뽑을 수 있어
+- Acquisition function으로 $x_next$ 추출
+    - 후보 $x^*$들에 대해 $\mu(x^*), \sigma^2(x^*)$ 평가하면서 acquisition function 최대화
+    - exploitation + exploration
+- $x_next$를 실제 목적함수로 evaluate
+    - $y_\text{next}​=f(x_\text{next​})$
+- {$x_\text{next}, y_\text{next}$}를 데이터 $D$에 추가
+- GP fit ~ {$x_next, y_next$} 과정 반복
+    - 점점 실제 목적함수를 더 잘 모방하는 surrogate model이 됨
+    - 실제 목적함수를 덜 실행하면서 최적화. sample efficiency
+
+
+----
 
 
 ## 베이지안 통계
@@ -160,8 +189,8 @@ $$
 
 
 - $K_{ij} = k(x_i, x_j)$ ($n \times n$ 그램 행렬)
-- $\mathbf{k}_* = [k(x_1, x_\*), \dots, k(x_n, x_\*)]^\top$
-- $k_{\*\*} = k(x_\*, x_\*)$
+- <span>$$\mathbf{k}_{*} = [k(x_1, x_{*}), \dots, k(x_n, x_{*})]^\top$$</span>
+- <span>$$k_{**} = k(x_{*}, x_{*})$$</span>
 
 다변량 정규분포의 conditioning 공식을 그대로 쓰면, **사후분포가 닫힌 형태로 나온다**:
 
