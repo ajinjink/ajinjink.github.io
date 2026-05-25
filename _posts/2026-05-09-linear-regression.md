@@ -259,8 +259,9 @@ $$\mathbf{y} = \boldsymbol{\beta}^\top \mathbf{x} + \varepsilon, \quad \text{whe
 
 - Gauss-Markov Theorem
 
-  - **MLE는 최량 불편 추정량(BLUE: Best Linear Unbiased Estimator)이다.** 즉, Unbiased한 모든 추정량 중에서 MLE의 분산이 가장 작다.
-  - <span>$$\text{어떤 unbiased 추정량 } \tilde{\theta} \text{ 에 대해서도: } \text{Var}(\hat{\theta}_{\text{MLE}}) \leq \text{Var}(\tilde{\theta})$$</span>
+  - **MLE는 최량 불편 추정량(BLUE: Best Linear Unbiased Estimator)이다.**
+    - Unbiased한 모든 추정량 중에서 MLE의 분산이 가장 작다.
+  - <span>$$\text{어떤 unbiased 추정량 } \tilde{\theta} \text{ 에 대해서도 } \text{Var}(\hat{\theta}_{\text{MLE}}) \leq \text{Var}(\tilde{\theta})$$</span>
 
 - Bias-Variance Tradeoff
 

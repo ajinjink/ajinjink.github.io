@@ -22,13 +22,13 @@ use_math: true
         - GP prior를 데이터 $D$에 conditioning 해서 posterior GP 얻어
         - posterior GP는 함수 공간 위의 분포로 존재
             - 필요한 $x^\*$가 들어오면, 그 점에서의 $\mu(x^\*), \sigma^2(x^\*)$ 뽑을 수 있어
-- Acquisition function으로 $x_next$ 추출
+- Acquisition function으로 $x_\text{next}$ 추출
     - 후보 $x^\*$들에 대해 $\mu(x^\*), \sigma^2(x^\*)$ 평가하면서 acquisition function 최대화
     - exploitation + exploration
-- $x_next$를 실제 목적함수로 evaluate
+- $x_\text{next}$를 실제 목적함수로 evaluate
     - $y_\text{next}​=f(x_\text{next​})$
 - {$x_\text{next}, y_\text{next}$}를 데이터 $D$에 추가
-- GP fit ~ {$x_next, y_next$} 과정 반복
+- GP fit ~ {$x_\text{next}, y_\text{next}$} 과정 반복
     - 점점 실제 목적함수를 더 잘 모방하는 surrogate model이 됨
     - 실제 목적함수를 덜 실행하면서 최적화. sample efficiency
 
