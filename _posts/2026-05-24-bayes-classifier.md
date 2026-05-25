@@ -2,12 +2,36 @@
 title: "[ML] Bayes Classifier"
 date: 2026-05-24
 categories: ["AI", "ML"]
-tags: ["bayes classifier", "classification", "likelihood", "discriminant analysis", "generative classifier", "discriminative classifier", "MLE", "LDA", "QDA", "softmax", "logistic regression", "ROC curve", "naive bayes", "Bayes' theorem"]
+tags: ["bayes classifier", "classification", "classifier", "likelihood", "discriminant analysis", "generative classifier", "discriminative classifier", "MLE", "LDA", "QDA", "softmax", "logistic regression", "ROC curve", "naive bayes", "Bayes' theorem"]
 use_math: true
 ---
 
+## 요약
+
+**Bayes Classifier**
+1. $\mathbf{x}$를 관측했을 때 label $\mathbf{y}$가 뭘지에 대한 **불확실성**이 있음 → 이게 posterior $p(\mathbf{y}\|\mathbf{x})$
+2. 어떤 예측값 $\hat{\mathbf{y}}$을 내놓으면 그에 따른 loss가 결정됨 → $\mathcal{L}(\mathbf{y}, \hat{\mathbf{y}})$
+3. 진짜 $\mathbf{y}$가 뭔지 모르니까 **posterior 하에서 loss의 기댓값**을 계산
+    - posterior $p(\mathbf{y}\|\mathbf{x})$를 직접 모델링하기 어려워서, 더 모델링하기 쉬운 prior $p(\mathbf{y})$와 likelihood $p(\mathbf{x}\|\mathbf{y})$로 뒤집어서 표현
+4. 이 기댓값을 최소화하는 $\hat{\mathbf{y}}$를 선택
+
+<br>
+
+- Bayes classifier $f^*$는 정의상 **risk를 최소화하는 optimal classifier**임.
+- 어떤 classifier도 Bayes classifier보다 더 낮은 risk를 가질 수 없음.
+    - 이게 baseline of all baselines, 이론적 lower bound임.
+- 근데 문제는 Bayes classifier를 만들려면 **진짜 $p(\mathbf{x}, \mathbf{y})$ 분포를 알아야 함**.
+    - "신만이 아는" 분포. 현실에서는 절대 알 수 없음.
+- 그래서 Bayes classifier는 직접 구현할 수 있는 알고리즘이 아니라 **이론적 reference point**임.
+    - "만약 우리가 진짜 분포를 안다면 이렇게 분류하는 게 최선이다"라는 청사진.
+
+**Discriminant Analysis**
+- Bayes classifier를 실제로 만들어 보겠다는 접근 (청사진을 구현하려는 시도)
+- 진짜 $p(\mathbf{x}\|\mathbf{y})$를 모르니까, **Gaussian으로 가정하고 데이터로 파라미터를 추정**해서 근사
+- Bayes classifier + "$p(\mathbf{x}\|\mathbf{y})$는 Gaussian이다"라는 가정 + MLE로 파라미터 추정
 
 
+---
 
 ## Classification Problem
 
@@ -43,7 +67,7 @@ $$ f^*(x) = \arg\min_{\hat{\mathbf{y}}} \sum_{\mathbf{y}} p(\mathbf{y}|\mathbf{x
 
 binary classification  $\mathbf{y} \in {+1, -1}$ 케이스에서 풀어 쓰면,
 
-$$\begin{aligned} f^*(x) &= \arg\min_{\hat{\mathbf{y}}} \sum_{\mathbf{y}} p(\mathbf{y}\|\mathbf{x} = x) \mathcal{L}(\mathbf{y}, \hat{\mathbf{y}}) \\ &= \arg\min_{\hat{\mathbf{y}}}  p(\mathbf{y}=1|\mathbf{x}=x)\mathcal{L}(1, \hat{\mathbf{y}}) + p(\mathbf{y}=-1|\mathbf{x}=x)\mathcal{L}(-1, \hat{\mathbf{y}}) \end{aligned}$$
+$$\begin{aligned} f^*(x) &= \arg\min_{\hat{\mathbf{y}}} \sum_{\mathbf{y}} p(\mathbf{y}|\mathbf{x} = x) \mathcal{L}(\mathbf{y}, \hat{\mathbf{y}}) \\ &= \arg\min_{\hat{\mathbf{y}}}  p(\mathbf{y}=1|\mathbf{x}=x)\mathcal{L}(1, \hat{\mathbf{y}}) + p(\mathbf{y}=-1|\mathbf{x}=x)\mathcal{L}(-1, \hat{\mathbf{y}}) \end{aligned}$$
 
 - y가 1이면 loss $\mathcal{L}(1, \hat{\mathbf{y}})$ 가 0
 - y가 -1이면 loss $\mathcal{L}(-1, \hat{\mathbf{y}})$ 가 0
@@ -69,7 +93,7 @@ $$\begin{aligned} f^*(x) &= \arg\min_{\hat{\mathbf{y}}}  p(\mathbf{y}=1|\mathbf{
 
 우리가 알고 싶은 건 posterior $p(\mathbf{y}\|\mathbf{x})$인데, 이걸 직접 모델링하기 힘드니까 **Bayes' Rule**로 뒤집어 봄.
 
-$$ p(\mathbf{y}\|\mathbf{x}) = \frac{p(\mathbf{x}\|\mathbf{y}) p(\mathbf{y})}{p(\mathbf{x})} $$
+$$ p(\mathbf{y}|\mathbf{x}) = \frac{p(\mathbf{x}|\mathbf{y}) p(\mathbf{y})}{p(\mathbf{x})} $$
 
 - **Prior** $p(\mathbf{y})$: $\mathbf{x}$를 보기 전 라벨의 확률
 - **Likelihood** $p(\mathbf{x}\|\mathbf{y})$: 클래스 $\mathbf{y}$에서 $\mathbf{x}$가 관측될 확률
@@ -77,7 +101,7 @@ $$ p(\mathbf{y}\|\mathbf{x}) = \frac{p(\mathbf{x}\|\mathbf{y}) p(\mathbf{y})}{p(
 
 따라서,
 
-$$ f^*(x) = \text{sign}\left(\log \frac{p(\mathbf{x}=x\|\mathbf{y}=1)p(\mathbf{y}=1)}{p(\mathbf{x}=x|\mathbf{y}=-1)p(\mathbf{y}=-1)}\right) $$
+$$ f^*(x) = \text{sign}\left(\log \frac{p(\mathbf{x}=x|\mathbf{y}=1)p(\mathbf{y}=1)}{p(\mathbf{x}=x|\mathbf{y}=-1)p(\mathbf{y}=-1)}\right) $$
 
 - $p(\mathbf{x})$는 분자/분모 비율에서 cancel out
 
@@ -109,7 +133,7 @@ $$ f^*(x) = \text{sign}\left(\log \frac{p(\mathbf{x}=x\|\mathbf{y}=1)p(\mathbf{y
 
 $f^*(x)$를 근사하기 위해 $p(\mathbf{x}\|\mathbf{y})$가 Gaussian $\mathcal{N}(\mu_y, \Sigma_y)$이라고 가정함.
 
-$$\begin{aligned} f^*(x) &= \text{sign}\left(\log \frac{p(\mathbf{x}=x\|\mathbf{y}=1)p(\mathbf{y}=1)}{p(\mathbf{x}=x\|\mathbf{y}=-1)p(\mathbf{y}=-1)}\right) \\ &= \text{sign}\left(\log \frac{\mathcal{N}(\mu_1, \sigma_1) \cdot \alpha}{\mathcal{N}(\mu_{-1}, \sigma_{-1}) \cdot (1-\alpha)}\right) \end{aligned}$$
+$$\begin{aligned} f^*(x) &= \text{sign}\left(\log \frac{p(\mathbf{x}=x|\mathbf{y}=1)p(\mathbf{y}=1)}{p(\mathbf{x}=x|\mathbf{y}=-1)p(\mathbf{y}=-1)}\right) \\ &= \text{sign}\left(\log \frac{\mathcal{N}(\mu_1, \sigma_1) \cdot \alpha}{\mathcal{N}(\mu_{-1}, \sigma_{-1}) \cdot (1-\alpha)}\right) \end{aligned}$$
 
 - $\hat{\alpha}$ :  $p(\mathbf{y}=1)$의 추정값
   -  $p(\mathbf{y}=-1) = 1 - \hat{\alpha}$

@@ -2,7 +2,7 @@
 title: "[ML] Logistic Regression"
 date: 2026-05-23
 categories: ["AI", "ML"]
-tags: ["logistic regression", "classifier", "sigmoid", "log odds", "MLE", "likelihood", "log-likelihood", "gradient descent", "SGD", "loss function", "stochastic", "softmax"]
+tags: ["logistic regression", "regression", "classifier", "classification", "sigmoid", "log odds", "MLE", "likelihood", "log-likelihood", "gradient descent", "SGD", "loss function", "log loss", "stochastic", "softmax"]
 use_math: true
 ---
 

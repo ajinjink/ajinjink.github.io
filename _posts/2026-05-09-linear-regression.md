@@ -2,7 +2,7 @@
 title: "[ML] Linear Regression"
 date: 2026-05-09
 categories: ["AI", "ML"]
-tags: ["linear regression", "MLE", "Bernoulli distribution", "Gaussian distribution", "RSE", "RSS", "MSE", "feature selection", "best subset selection", "stepwise selection", "stagewise selection", "cross validation", "k-fold"]
+tags: ["linear regression", "regression", "MLE", "Bernoulli distribution", "Gaussian distribution", "RSE", "RSS", "MSE", "feature selection", "best subset selection", "stepwise selection", "stagewise selection", "cross validation", "k-fold"]
 use_math: true
 ---
 

@@ -23,7 +23,7 @@ use_math: true
         - posterior GP는 함수 공간 위의 분포로 존재
             - 필요한 $x^\*$가 들어오면, 그 점에서의 $\mu(x^\*), \sigma^2(x^\*)$ 뽑을 수 있어
 - Acquisition function으로 $x_next$ 추출
-    - 후보 $x^*$들에 대해 $\mu(x^*), \sigma^2(x^*)$ 평가하면서 acquisition function 최대화
+    - 후보 $x^\*$들에 대해 $\mu(x^\*), \sigma^2(x^\*)$ 평가하면서 acquisition function 최대화
     - exploitation + exploration
 - $x_next$를 실제 목적함수로 evaluate
     - $y_\text{next}​=f(x_\text{next​})$
