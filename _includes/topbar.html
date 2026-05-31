@@ -5,6 +5,10 @@
     id="topbar"
     class="d-flex align-items-center justify-content-between px-lg-3 h-100"
   >
+    <button type="button" id="sidebar-toggle" class="btn btn-link" aria-label="Toggle Sidebar">
+      <i class="fas fa-bars fa-fw"></i>
+    </button>
+
     <nav id="breadcrumb" aria-label="Breadcrumb">
       {% assign paths = page.url | split: '/' %}
 

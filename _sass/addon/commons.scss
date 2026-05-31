@@ -994,7 +994,8 @@ search {
 }
 
 #sidebar-trigger,
-#search-trigger {
+#search-trigger,
+#sidebar-toggle {
   display: none;
 }
 
@@ -1361,8 +1362,28 @@ search {
     overflow-y: scroll;
   }
 
+  #sidebar-toggle {
+    display: block;
+  }
+
+  #sidebar {
+    transition: transform 0.4s ease, visibility 0.4s ease;
+  }
+
   #main-wrapper {
     margin-left: $sidebar-width;
+    transition: margin-left 0.4s ease;
+  }
+
+  [sidebar-collapsed] {
+    #sidebar {
+      transform: translateX(-100%);
+      visibility: hidden;
+    }
+
+    #main-wrapper {
+      margin-left: 0;
+    }
   }
 
   #sidebar {
@@ -1487,6 +1508,16 @@ search {
 
   #topbar-wrapper {
     left: $sidebar-width-large;
+  }
+
+  [sidebar-collapsed] {
+    #main-wrapper {
+      margin-left: 0;
+    }
+
+    #topbar-wrapper {
+      left: 0;
+    }
   }
 
   search {

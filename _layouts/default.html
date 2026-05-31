@@ -78,6 +78,16 @@ layout: compress
 
     {% include js-selector.html %}
 
+    <script>
+      document.getElementById('sidebar-toggle').addEventListener('click', function () {
+        if (document.body.hasAttribute('sidebar-collapsed')) {
+          document.body.removeAttribute('sidebar-collapsed');
+        } else {
+          document.body.setAttribute('sidebar-collapsed', '');
+        }
+      });
+    </script>
+
     {% if page.mermaid %}
       {% include mermaid.html %}
     {% endif %}
