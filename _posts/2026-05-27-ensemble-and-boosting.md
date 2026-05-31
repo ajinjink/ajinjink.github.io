@@ -2,7 +2,7 @@
 title: "[ML] Ensemble Methods & Boosting"
 date: 2026-05-27
 categories: ["AI", "ML"]
-tags: []
+tags: ["bootstrap", "cross validation", "bagging", "bagged trees", "random forest", "boosting", "AdaBoost", "stagewise selection", "residual-based learning", "regression", "classification", "k-fold"]
 use_math: true
 ---
 
