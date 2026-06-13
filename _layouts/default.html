@@ -79,13 +79,17 @@ layout: compress
     {% include js-selector.html %}
 
     <script>
-      document.getElementById('sidebar-toggle').addEventListener('click', function () {
-        if (document.body.hasAttribute('sidebar-collapsed')) {
-          document.body.removeAttribute('sidebar-collapsed');
-        } else {
-          document.body.setAttribute('sidebar-collapsed', '');
+      (function () {
+        function toggleSidebar() {
+          if (document.body.hasAttribute('sidebar-collapsed')) {
+            document.body.removeAttribute('sidebar-collapsed');
+          } else {
+            document.body.setAttribute('sidebar-collapsed', '');
+          }
         }
-      });
+        document.getElementById('sidebar-toggle').addEventListener('click', toggleSidebar);
+        document.getElementById('sidebar-close').addEventListener('click', toggleSidebar);
+      })();
     </script>
 
     {% if page.mermaid %}

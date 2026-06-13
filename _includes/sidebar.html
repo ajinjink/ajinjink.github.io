@@ -1,6 +1,10 @@
 <!-- The Side Bar -->
 
 <aside aria-label="Sidebar" id="sidebar" class="d-flex flex-column align-items-end">
+  <button type="button" id="sidebar-close" class="btn btn-link" aria-label="Close Sidebar">
+    <i class="fas fa-bars fa-fw"></i>
+  </button>
+
   <header class="profile-wrapper">
     <a href="{{ '/' | relative_url }}" id="avatar" class="rounded-circle">
       {% if site.avatar != empty and site.avatar %}

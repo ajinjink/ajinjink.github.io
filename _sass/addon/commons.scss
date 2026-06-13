@@ -995,7 +995,8 @@ search {
 
 #sidebar-trigger,
 #search-trigger,
-#sidebar-toggle {
+#sidebar-toggle,
+#sidebar-close {
   display: none;
 }
 
@@ -1362,8 +1363,20 @@ search {
     overflow-y: scroll;
   }
 
-  #sidebar-toggle {
+  #sidebar-close {
     display: block;
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    z-index: 1;
+    color: var(--sidebar-muted-color);
+    border: none;
+    padding: 0.25rem 0.5rem;
+    font-size: 1.1rem;
+
+    &:hover {
+      color: var(--sidebar-active-color);
+    }
   }
 
   #sidebar {
@@ -1383,6 +1396,10 @@ search {
 
     #main-wrapper {
       margin-left: 0;
+    }
+
+    #sidebar-toggle {
+      display: block;
     }
   }
 
