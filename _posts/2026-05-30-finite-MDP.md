@@ -2,7 +2,7 @@
 title: "[RL] Finite Markov Decision Process (유한 마르코프 결정 과정)"
 date: 2026-05-31
 categories: ["AI", "RL"]
-tags: ["MDP", "dynamics", "Markov", "Markov property", "absorbing state", "episodic task", "continueing task", "policy", "value function", "state value function", "action value function", "Bellman equation", "optimal policy", "optimal value function", "Bellman optimality"]
+tags: ["MDP", "dynamics", "Markov", "Markov property", "absorbing state", "episodic task", "continuing task", "policy", "value function", "state value function", "action value function", "Bellman equation", "optimal policy", "optimal value function", "Bellman optimality"]
 use_math: true
 ---
 
@@ -36,7 +36,7 @@ MDP는 목표를 이루기 위해 상호작용으로부터 학습하는 문제�
 - discrete time step $t = 0, 1, 2, \dots$ 마다 agent는 상태 $S_t \in \mathcal{S}$ 를 받고, 행동 $A_t \in \mathcal{A}(s)$ 를 선택함. 
 - 다음 단계에서 환경은 보상 $R_{t+1} \in \mathcal{R} \subset \mathbb{R}$ 과 다음 상태 $S_{t+1}$ 을 돌려줌.
 
-<div style="white-space: pre; font-family: monospace; line-height: 1.5;">
+<pre style="font-family: monospace; line-height: 1.5;">
                  Action $A_t$
           ┌─────────────────────────┐
           │                         ▼
@@ -44,7 +44,7 @@ MDP는 목표를 이루기 위해 상호작용으로부터 학습하는 문제�
           ▲
           └─────────────────────────┘
           State $S_{t+1}$, Reward $R_{t+1}$
-</div>
+</pre>
 
 <br>
 
@@ -73,13 +73,13 @@ $$
 - **보상**: 캔을 모으면 +1, 배터리 방전되면 -3
 
 일 때, trajectory는 :
-<div style="white-space: pre; font-family: monospace; line-height: 1.5;">
+<pre style="font-family: monospace; line-height: 1.5;">
 S_0 = high  →  A_0 = search  →  R_1 = +1, S_1 = high
             →  A_1 = search  →  R_2 = +1, S_2 = low
             →  A_2 = wait    →  R_3 = 0,  S_3 = low
             →  A_3 = recharge → R_4 = 0, S_4 = high
             ...
-</div>
+</pre>
 
 
 ---
@@ -351,7 +351,7 @@ $$
 - $v_\pi$ 만 있으면 그게 안 됨.
 - 이 비교가 강화학습에서 policy improvement의 핵심
     - 현재 policy가 잘하는지 못하는지를 행동별로 따져보고, 더 나은 행동이 있으면 그걸로 policy를 갱신
-    - 어떤 상태에서든 $\pi$ 보다 한 번만 다르게 행동해도 손해가 없다면 이미 $\pi$는 optimal
+    - 어떤 상태에서든 $\pi$ 보다 한 번만 다르게 행동해도 이득이 없다면 이미 $\pi$는 optimal
     - 어떤 상태에서 한 번 다르게 행동하니 이득이면 그 방향으로 $\pi$를 고치면 항상 더 좋아짐
 
 <br>
@@ -490,12 +490,12 @@ $$ q_\pi(s, a) = \sum_{s', r} p(s', r \mid s, a)\Big[r + \gamma \sum_{a'} \pi(a'
 
 
 ```
-              (s, a)             ← 시작: 상태-행동 쌍
-              /|\
-             / | \                ← 환경이 r, s' 결정
-            ○  ○  ○              ← 다음 상태 노드
+              (s, a)               ← 시작: 상태-행동 쌍
+              / | \
+             /  |  \               ← 환경이 r, s' 결정
+            ○   ○   ○              ← 다음 상태 노드
            /|\ /|\ /|\
-          •  • •  • •  •         ← policy π 가 다음 행동 a' 선택
+          •  • •  • • •         ← policy π 가 다음 행동 a' 선택
 ```
 
 $v_\pi$ 의 backup diagram과 비교하면 
@@ -634,9 +634,9 @@ v*:                     q*:
       /|\                       |
      max                      r,s'
     / | \                      /  \
-   • • •                      ○    ○
+   •  •  •                    ○    ○
   /|\ ...                   max   max
- ○ ○ ... ○                  / \   / \
+ ○ ○  ... ○                 / \   / \
                            •   • •   •
 ```
 
